@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Emanuel">
+    <link rel="shortcut icon" type="image/ico" href="css/favicon.ico"/>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="css/dist/style.css">
+    <link href="css/ui-icons/css/uicons-regular-rounded.css" rel="stylesheet">
+    <title>Aplicacion de Grafos</title>
+</head>
+
+<body>
+
+    <!-- MENU -->
+    <section id="menu">
+
+        <div id="opciones" target="opciones_menu" class="boton-menu">
+            <span class="fi fi-rr-menu-burger"></span>
+        </div>
+        <div id="opciones_menu">
+            <a href="javascript:void(0)" id="nuevo_grafo">Nuevo Grafo</a>
+            <a href="javascript:void(0)" id="limpiar_grafo">Limpiar Grafo</a>
+        </div>
+
+        <!-- Opciones Grafo -->
+        <div class="grupo-opciones" tag="Grafo">
+            <div id="dibujar_nodo" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-circle"></span>
+            </div>
+
+            <div id="dibujar_arista" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-minus"></span>
+            </div>
+        </div>
+
+        <!-- Opciones Ejecucion -->
+        <div class="grupo-opciones" tag="Ejecución">
+
+            <div class="deshabilitado">
+                <select id="algoritmo">
+                    <option value="1">BFS</option>
+                    <option value="2">DFS</option>
+                </select>
+            </div>
+
+            <div id="ejecutar_algoritmo" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-play"></span>
+            </div>
+
+            <!-- <div id="paso_atras" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-forward"></span>
+            </div> -->
+
+            <div id="pausar_ejecucion" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-pause"></span>
+            </div>
+
+            <!-- <div id="paso_adelante" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-forward"></span>
+            </div> -->
+
+            <div id="detener_ejecucion" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-stop"></span>
+            </div>
+
+            <div id="limpiar_ejecucion" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-broom"></span>
+            </div>
+
+            <div id="ver_algoritmo" class="boton-menu deshabilitado">
+                <span class="fi fi-rr-eye"></span>
+            </div>
+        </div>
+
+        <!-- Manual -->
+        <div id="manual_boton" class="boton-menu grupo-opciones">
+            <span class="fi fi-rr-book"></span>
+        </div>
+    </section>
+
+    <div id="my_body">
+        <!-- CUERPO -->
+        <div id="content">
+        
+            <!-- PANEL IZQUIERDO -->
+            <div id="panel_izquierdo">
+                <h3>Algoritmo</h3>
+                <div class="pseudocodigo">
+                    <p>BFS(grafo G, nodo_fuente s) {</p>
+                    <div class="bloque">
+                        <p>for u ∈ V[G] do {</p>
+                        <div class="bloque">
+                            <div paso="1">
+                                <p>estado[u] = NO_VISITADO;</p>
+                                <p>distancia[u] = INFINITO;</p>
+                                <p>padre[u] = NULL;</p>
+                            </div>
+                        </div>
+                        <p>}</p>
+        
+                        <div paso="2">
+                            <p>estado[s] = VISITADO;</p>
+                            <p>distancia[s] = 0;</p>
+                            <p>padre[s] = NULL;</p>
+                        </div>
+                        <p>CrearCola(Q);</p>
+                        <p paso="3">Encolar(Q, s);</p>
+                        <p>while !vacía(Q) do {</p>
+                        <div class="bloque">
+                            <p paso="4">u = extraer(Q);</p>
+        
+                            <p>for v ∈ adyacencia[u] do {</p>
+                            <div class="bloque">
+                                <p>if estado[v] == NO_VISITADO then {</p>
+                                <div class="bloque">
+                                    <div paso="5">
+                                        <p>estado[v] = VISITADO;</p>
+                                        <p>distancia[v] = distancia[u] + 1;</p>
+                                        <p>padre[v] = u;</p>
+                                    </div>
+        
+                                    <p paso="6">Encolar(Q, v);</p>
+                                </div>
+                                <p>}</p>
+                            </div>
+                            <p>}</p>
+        
+                            <p paso="7">estado[u] = FINALIZADO;</p>
+                        </div>
+                        <p>}</p>
+                    </div>
+                    <p>}</p>
+                </div>
+            </div>
+        
+            <!-- LIENZO -->
+            <svg id="canvas" viewBox="0 0 100 100">
+                <defs>
+                    <marker id="arrowhead" orient="auto" markerUnits="userSpaceOnUse" markerWidth="20" markerHeight="12"
+                        refX="36" refY="6">
+                        <path d="M0,0 V12 L20,6 Z" fill="black" stroke-width="3px"></path>
+                    </marker>
+                </defs>
+        
+                <g id="template-textPath">
+                    <text>
+                        <textPath href="#" startOffset="50%">0</textPath>
+                    </text>
+                </g>
+            </svg>
+        </div>
+        
+        <!-- RESULTADOS -->
+        <div id="resultados">
+            <h2>Resultados</h2>
+        
+            <table class="table">
+            </table>
+        </div>
+    </div>
+
+    <!-- MODALES -->
+    <div class="modal" id="modal_configuracion_inicial">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p>Configuración</p>
+            </div>
+            <div class="modal-body">
+                <form id="configuracion_formulario">
+
+                    <div class="seccion">
+                        <div>
+                            <label for="grafo">Tipo de Grafo: </label>
+                            <select id="grafo">
+                                <option value="1">Grafo Normal</option>
+                                <option value="2">Grafo Dirigido</option>
+                            </select>
+                        </div>
+
+                        <div class="con-check">
+                            <label for="ponderado">Grafo Ponderado (Pesado):</label>
+                            <input type="checkbox" id="ponderado">
+                        </div>
+
+                        <div class="con-check">
+                            <label for="autonombrar">Nombrar Automáticamente (Con Números):</label>
+                            <input type="checkbox" id="autonombrar">
+                        </div>
+                    </div>
+
+                    <div class="seccion">
+                        <div>
+                            <label for="tiempo_paso">Tiempo Para Cada Paso del Algoritmo (ms): </label>
+                            <input type="number" id="tiempo_paso" step="1" min="0" max="5000">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Finalizar" form="configuracion_formulario" class="boton">
+                <a href="javascript:void(0)" class="boton cerrar-modal" id="configuracion_cancelar">Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_nombrar_nodo">
+        <div class="modal-content">
+            <div class="modal-header center">
+                <p>Nombra el Nodo Creado</p>
+            </div>
+            <div class="modal-body">
+                <form id="nombrar_formulario">
+                    <input type="text" id="nombre_nodo" class="" autocomplete="off">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Hecho" form="nombrar_formulario" class="boton">
+                <a href="javascript:void(0)" class="boton cerrar-modal" id="nombrar_cancelar">Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_informacion_ejecutar">
+        <div class="modal-content">
+            <div class="modal-header center">
+                <p>Ejecutar</p>
+            </div>
+            <div class="modal-body">
+                <form id="informar_antes_ejecutar">
+                    <h4>A continuación, selecciona el nodo de inicio.</h4>
+                    <div class="con-check dejar-preguntar">
+                        <label for="informar_ejecutar">No volver a mostrar</label>
+                        <input type="checkbox" id="informar_ejecutar">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Ok" form="informar_antes_ejecutar" id="informar_ejecutar_terminar"
+                    class="boton cerrar-modal">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_peso_arista">
+        <div class="modal-content">
+            <div class="modal-header center">
+                <p>Ingresa el Peso de la Arista</p>
+            </div>
+            <div class="modal-body">
+                <form id="peso_arista_formulario">
+                    <input type="number" id="peso_arista" autocomplete="off" step="0.01">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Hecho" form="peso_arista_formulario" class="boton">
+                <a href="javascript:void(0)" class="boton cerrar-modal" id="peso_arista_cancelar">Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/graphs.js"></script>
+    <script src="js/BFS.js"></script>
+    <script src="js/DFS.js"></script>
+</body>
+
+</html>
