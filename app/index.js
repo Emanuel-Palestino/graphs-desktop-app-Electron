@@ -1,9 +1,15 @@
 const { app, BrowserWindow } = require('electron');
+const env = process.env.NODE_ENV || 'development';
 
-if(process.env.NODE_ENV !== 'production') {
-    require('electron-reload')(__dirname, {
-        electron: require(`${__dirname}/../node_modules/electron`)
-    });
+if(env === 'development') {
+    try {
+        console.log(env);
+        require('electron-reload')(__dirname, {
+            electron: require(`${__dirname}/../node_modules/electron`)
+        });
+    } catch(_) {
+        console.log('Error');
+    }
 }
 
 let mainWindow;

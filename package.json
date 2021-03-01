@@ -2,9 +2,12 @@
   "name": "aplicacion-grafos",
   "version": "0.1.0",
   "description": "Una aplicacion de escritorio para trabajar con grafos",
-  "main": "index.js",
+  "main": "app/index.js",
   "scripts": {
-    "test": "electron app/index.js"
+    "test": "electron app/index.js",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icon.icns --prune=true --out=release",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=x64 --icon=assets/icon.ico --prune=true --out=release",
+    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/1024x1024.png --prune=true --out=release"
   },
   "author": "Emanuel Palestino",
   "license": "ISC",
